@@ -5,7 +5,7 @@
 
   // Start in total mode if there's already a stored value, to avoid overwriting on remount
   let mode = $state('total');
-  let cardValues = $state([]);
+  let cardValues = $state([0]);
   let manualTotal = $state(value ?? 0);
 
   function getCardSum() {
@@ -21,7 +21,7 @@
   }
 
   function switchToCards() {
-    cardValues = [];
+    cardValues = [0];
     mode = 'cards';
     updateBonusTotal(playerIndex, 0);
   }
