@@ -1,10 +1,37 @@
 <script>
-  import { screen } from './lib/store.js';
+  import { onMount } from 'svelte';
+  import { get } from 'svelte/store';
+  import { screen, resetGame } from './lib/store.js';
   import FeatherIcon from './lib/components/FeatherIcon.svelte';
   import SetupScreen from './lib/components/SetupScreen.svelte';
   import ScoreScreen from './lib/components/ScoreScreen.svelte';
   import ResultsScreen from './lib/components/ResultsScreen.svelte';
   import HistoryScreen from './lib/components/HistoryScreen.svelte';
+
+  onMount(() => {
+    // Always keep a history entry above the current one so popstate always fires.
+    history.pushState(null, '');
+
+    function onPopState() {
+      const current = get(screen);
+      // Re-push immediately so the back button remains catchable next time.
+      history.pushState(null, '');
+
+      if (current === 'score') {
+        if (confirm('Zurück zur Startseite? Alle eingetragenen Punkte gehen verloren.')) {
+          resetGame();
+        }
+      } else if (current === 'results') {
+        screen.set('score');
+      } else if (current === 'history') {
+        screen.set('setup');
+      }
+      // On 'setup': do nothing — back button is silently swallowed.
+    }
+
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  });
 </script>
 
 <div class="app-shell">
@@ -76,7 +103,6 @@
     color: var(--color-text);
     flex: 1;
   }
-
 
   .history-btn {
     color: var(--color-text-muted);

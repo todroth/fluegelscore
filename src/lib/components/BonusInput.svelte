@@ -1,30 +1,15 @@
 <script>
   import { updateBonusTotal } from '../store.js';
 
-  let { playerIndex, value } = $props();
+  let { playerIndex } = $props();
 
-  // Start in total mode if there's already a stored value, to avoid overwriting on remount
-  let mode = $state('total');
   let cardValues = $state([0]);
-  let manualTotal = $state(value ?? 0);
 
   function getCardSum() {
     return cardValues.reduce((a, b) => a + (Number(b) || 0), 0);
   }
 
   let cardSum = $derived(getCardSum());
-
-  function switchToTotal() {
-    manualTotal = getCardSum();
-    mode = 'total';
-    updateBonusTotal(playerIndex, manualTotal);
-  }
-
-  function switchToCards() {
-    cardValues = [0];
-    mode = 'cards';
-    updateBonusTotal(playerIndex, 0);
-  }
 
   function addCard() {
     cardValues = [...cardValues, 0];
@@ -41,50 +26,30 @@
     cardValues = cardValues.map((c, idx) => (idx === i ? v : c));
     updateBonusTotal(playerIndex, getCardSum());
   }
-
-  function onManualInput(e) {
-    manualTotal = Math.max(0, parseInt(e.target.value) || 0);
-    updateBonusTotal(playerIndex, manualTotal);
-  }
 </script>
 
 <div class="bonus-input">
-  <div class="mode-toggle">
-    <button class:active={mode === 'cards'} onclick={switchToCards}>Karten</button>
-    <button class:active={mode === 'total'} onclick={switchToTotal}>Gesamt</button>
-  </div>
-
-  {#if mode === 'cards'}
-    <div class="cards-list">
-      {#each cardValues as _, i}
-        <div class="card-row">
-          <input
-            type="number"
-            min="0"
-            inputmode="numeric"
-            placeholder="0"
-            value={cardValues[i] || ''}
-            oninput={(e) => onCardInput(i, e)}
-            onblur={(e) => { if (!e.target.value) onCardInput(i, { target: { value: '0' } }); }}
-          />
+  <div class="cards-list">
+    {#each cardValues as _, i}
+      <div class="card-row">
+        <input
+          type="number"
+          min="0"
+          inputmode="numeric"
+          placeholder="0"
+          value={cardValues[i] || ''}
+          oninput={(e) => onCardInput(i, e)}
+          onblur={(e) => { if (!e.target.value) onCardInput(i, { target: { value: '0' } }); }}
+        />
+        {#if i > 0}
           <button class="remove-btn" onclick={() => removeCard(i)} aria-label="Karte entfernen">×</button>
-        </div>
-      {/each}
-      <button class="add-btn" onclick={addCard}>+ Karte</button>
-    </div>
-    {#if cardValues.length > 1}
-      <div class="sum-preview">= {cardSum}</div>
-    {/if}
-  {:else}
-    <input
-      type="number"
-      min="0"
-      inputmode="numeric"
-      placeholder="0"
-      value={manualTotal || ''}
-      oninput={onManualInput}
-      onblur={(e) => { if (!e.target.value) { manualTotal = 0; updateBonusTotal(playerIndex, 0); } }}
-    />
+        {/if}
+      </div>
+    {/each}
+    <button class="add-btn" onclick={addCard}>+ Karte</button>
+  </div>
+  {#if cardValues.length > 1}
+    <div class="sum-preview">= {cardSum}</div>
   {/if}
 </div>
 
@@ -94,33 +59,6 @@
     flex-direction: column;
     gap: 0.5rem;
     width: 100%;
-  }
-
-  .mode-toggle {
-    display: flex;
-    background: var(--color-bg);
-    border-radius: var(--radius-sm);
-    border: 1.5px solid var(--color-border-light);
-    overflow: hidden;
-  }
-
-  .mode-toggle button {
-    flex: 1;
-    padding: 0.3rem 0;
-    font-size: 0.65rem;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    transition: background 0.15s, color 0.15s;
-    border-right: 1px solid var(--color-border-light);
-  }
-
-  .mode-toggle button:last-child {
-    border-right: none;
-  }
-
-  .mode-toggle button.active {
-    background: var(--color-accent);
-    color: white;
   }
 
   .cards-list {
