@@ -5,8 +5,10 @@
   let history = $state(loadHistory());
 
   function remove(id) {
-    deleteEntry(id);
-    history = loadHistory();
+    if (confirm('Dieses Spiel löschen?')) {
+      deleteEntry(id);
+      history = loadHistory();
+    }
   }
 
   function removeAll() {
