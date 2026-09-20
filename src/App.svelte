@@ -11,7 +11,13 @@
   <header>
     <div class="header-inner">
       <span class="logo-icon"><FeatherIcon size={28} /></span>
-      <h1>Flügelscore</h1>
+      {#if $screen === 'score'}
+        <button class="title-back-btn" onclick={() => screen.set('setup')} aria-label="Zurück zur Startseite">
+          ← Flügelscore
+        </button>
+      {:else}
+        <h1>Flügelscore</h1>
+      {/if}
       {#if $screen === 'setup'}
         <button class="history-btn" onclick={() => screen.set('history')} title="Spielverlauf">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -75,6 +81,19 @@
     font-size: 1.3rem;
     color: var(--color-text);
     flex: 1;
+  }
+
+  .title-back-btn {
+    flex: 1;
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    color: var(--color-text);
+    text-align: left;
+    transition: color 0.15s;
+  }
+
+  .title-back-btn:hover {
+    color: var(--color-accent);
   }
 
   .history-btn {
