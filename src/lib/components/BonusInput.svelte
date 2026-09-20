@@ -50,7 +50,7 @@
 
 <div class="bonus-input">
   <div class="mode-toggle">
-    <button class:active={mode === 'cards'} onclick={switchToCards}>Einzeln</button>
+    <button class:active={mode === 'cards'} onclick={switchToCards}>Karten</button>
     <button class:active={mode === 'total'} onclick={switchToTotal}>Gesamt</button>
   </div>
 
@@ -105,9 +105,9 @@
 
   .mode-toggle button {
     flex: 1;
-    padding: 0.3rem 0.5rem;
-    font-size: 0.78rem;
-    font-weight: 500;
+    padding: 0.3rem 0;
+    font-size: 0.65rem;
+    font-weight: 600;
     color: var(--color-text-muted);
     transition: background 0.15s, color 0.15s;
     border-right: 1px solid var(--color-border-light);

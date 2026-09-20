@@ -151,7 +151,7 @@
 
   .grid {
     display: grid;
-    grid-template-columns: 6.5rem repeat(var(--players), minmax(4.75rem, 1fr));
+    grid-template-columns: 6.5rem repeat(var(--players), minmax(6rem, 1fr));
     min-width: fit-content;
     width: 100%;
   }
