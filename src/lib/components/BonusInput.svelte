@@ -63,7 +63,7 @@
             min="0"
             inputmode="numeric"
             placeholder="0"
-            value={cardValues[i]}
+            value={cardValues[i] || ''}
             oninput={(e) => onCardInput(i, e)}
             onblur={(e) => { if (!e.target.value) onCardInput(i, { target: { value: '0' } }); }}
           />

@@ -48,7 +48,7 @@
             min="0"
             inputmode="numeric"
             placeholder="0"
-            value={habitatValues?.[h.key] ?? 0}
+            value={habitatValues?.[h.key] || ''}
             oninput={(e) => onHabitatInput(h.key, e)}
             onblur={(e) => { if (!e.target.value) updateNektarHabitat(playerIndex, h.key, 0); }}
           />
@@ -62,7 +62,7 @@
       min="0"
       inputmode="numeric"
       placeholder="0"
-      value={manualTotal}
+      value={manualTotal || ''}
       oninput={onManualInput}
       onblur={(e) => { if (!e.target.value) { manualTotal = 0; updateScore(playerIndex, 'nektarTotal', 0); } }}
     />
