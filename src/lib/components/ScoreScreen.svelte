@@ -3,6 +3,15 @@
   import BonusInput from './BonusInput.svelte';
   import NektarInput from './NektarInput.svelte';
 
+  $effect(() => {
+    function onBeforeUnload(e) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+    window.addEventListener('beforeunload', onBeforeUnload);
+    return () => window.removeEventListener('beforeunload', onBeforeUnload);
+  });
+
   let players = $derived($gameState.players);
   let totals = $derived($playerTotals);
 
