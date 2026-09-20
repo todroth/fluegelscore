@@ -3,16 +3,31 @@
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
-  <g fill="currentColor">
-    <!-- Body -->
-    <ellipse cx="13.5" cy="18.5" rx="8.6" ry="5.9" transform="rotate(-12 13.5 18.5)"/>
-    <!-- Head -->
-    <circle cx="20.6" cy="13.4" r="4.2"/>
-    <!-- Beak -->
-    <path d="M23.7 12.6 L28.2 13.5 L23.7 14.5Z"/>
-    <!-- Tail -->
-    <path d="M5.5 16.5 C3.9 15.4, 1.9 14.6, 1.3 15 C2.2 16.1, 3 17.4, 3 18.5 C3 19.6, 2.2 20.9, 1.3 22 C1.9 22.4, 3.9 21.6, 5.5 20.5Z"/>
-  </g>
-  <!-- Eye (background color cutout) -->
-  <circle cx="21.6" cy="12.8" r="1.2" fill="var(--color-surface, #FFFDF9)"/>
+  <!-- Vane (asymmetric — outer/upper-left wider) -->
+  <path d="M25 7
+           C24 8, 16 7, 13 9.5
+           C9.5 12, 8.8 17, 9.3 22.8
+           C11.4 20.6, 15 18, 18.5 15.5
+           C22 13, 24.5 10, 25 7Z"
+        fill="currentColor"/>
+
+  <!-- Rachis -->
+  <line x1="25" y1="7" x2="9.3" y2="22.8"
+        stroke="currentColor" stroke-width="0.85" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Calamus -->
+  <line x1="9.3" y1="22.8" x2="5.5" y2="28"
+        stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.85"/>
+
+  <!-- Outer barbs -->
+  <line x1="22.5" y1="9.5" x2="20" y2="7" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.35"/>
+  <line x1="19.5" y1="12.5" x2="15.5" y2="8.5" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.35"/>
+  <line x1="16" y1="16" x2="12" y2="11.5" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.35"/>
+  <line x1="12.5" y1="19.5" x2="9.5" y2="16.5" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.35"/>
+
+  <!-- Inner barbs -->
+  <line x1="22.5" y1="9.5" x2="23.5" y2="10.5" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.35"/>
+  <line x1="19.5" y1="12.5" x2="21.5" y2="14.5" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.35"/>
+  <line x1="16" y1="16" x2="18" y2="18" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.35"/>
+  <line x1="12.5" y1="19.5" x2="14" y2="21" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.35"/>
 </svg>
