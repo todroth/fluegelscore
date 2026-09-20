@@ -1,30 +1,103 @@
 <script>
-  import { gameState, goToResults } from '../store.js';
-  import PlayerColumn from './PlayerColumn.svelte';
-
-  let activePlayer = $state(0);
+  import { gameState, playerTotals, isDoubleGame, updateScore, goToResults } from '../store.js';
+  import BonusInput from './BonusInput.svelte';
+  import NektarInput from './NektarInput.svelte';
 
   let players = $derived($gameState.players);
+  let totals = $derived($playerTotals);
+
+  function onInput(playerIndex, field, e) {
+    const v = Math.max(0, parseInt(e.target.value) || 0);
+    updateScore(playerIndex, field, v);
+  }
+
+  function onBlur(playerIndex, field, e) {
+    if (!e.target.value) updateScore(playerIndex, field, 0);
+  }
+
+  const simpleRows = [
+    { key: 'voegel', label: 'Vögel' },
+    { key: 'rundenziele', label: 'Rundenziele' },
+    { key: 'eier', label: 'Eier' },
+    { key: 'futter', label: 'Gelagertes Futter' },
+    { key: 'kartenUnterVoegeln', label: 'Karten unter Vögeln' },
+  ];
 </script>
 
 <div class="score-screen">
-  <div class="player-tabs" role="tablist">
-    {#each players as p, i}
-      <button
-        role="tab"
-        class:active={activePlayer === i}
-        aria-selected={activePlayer === i}
-        onclick={() => (activePlayer = i)}
-      >
-        {p.name}
-      </button>
-    {/each}
-  </div>
+  <div class="scroll-container">
+    <div class="grid" style="--players: {players.length}">
 
-  <div class="player-card">
-    {#key activePlayer}
-      <PlayerColumn playerIndex={activePlayer} />
-    {/key}
+      <!-- Player name header -->
+      <div class="cell label-cell header-cell"></div>
+      {#each players as p}
+        <div class="cell player-header">{p.name}</div>
+      {/each}
+
+      <!-- Simple score rows -->
+      {#each simpleRows as row}
+        <div class="cell label-cell">{row.label}</div>
+        {#each players as p, i}
+          <div class="cell input-cell">
+            <input
+              type="number"
+              min="0"
+              inputmode="numeric"
+              placeholder="0"
+              value={p.scores[row.key] || ''}
+              oninput={(e) => onInput(i, row.key, e)}
+              onblur={(e) => onBlur(i, row.key, e)}
+            />
+          </div>
+        {/each}
+      {/each}
+
+      <!-- Bonuskarten row -->
+      <div class="cell label-cell">Bonuskarten</div>
+      {#each players as p, i}
+        <div class="cell input-cell">
+          <BonusInput playerIndex={i} value={p.scores.bonusTotal} />
+        </div>
+      {/each}
+
+      <!-- Nektar row -->
+      <div class="cell label-cell">Nektar</div>
+      {#each players as p, i}
+        <div class="cell input-cell">
+          <NektarInput
+            playerIndex={i}
+            habitatValues={p.scores.nektarHabitats}
+            nektarModeValue={p.scores.nektarMode}
+            nektarTotalValue={p.scores.nektarTotal}
+          />
+        </div>
+      {/each}
+
+      <!-- Duett-Marker row (2-player only) -->
+      {#if $isDoubleGame}
+        <div class="cell label-cell">Duett-Marker</div>
+        {#each players as p, i}
+          <div class="cell input-cell">
+            <input
+              type="number"
+              min="0"
+              inputmode="numeric"
+              placeholder="0"
+              value={p.scores.duettMarker || ''}
+              oninput={(e) => onInput(i, 'duettMarker', e)}
+              onblur={(e) => onBlur(i, 'duettMarker', e)}
+            />
+          </div>
+        {/each}
+      {/if}
+
+      <!-- Total row -->
+      <div class="cell label-cell total-label">Gesamt</div>
+      {#each totals as t}
+        <div class="cell total-cell">{t}</div>
+      {/each}
+
+    </div>
   </div>
 
   <button class="btn-results" onclick={goToResults}>
@@ -39,44 +112,94 @@
     gap: 1.25rem;
   }
 
-  .player-tabs {
-    display: flex;
-    gap: 0.35rem;
+  .scroll-container {
     overflow-x: auto;
-    padding-bottom: 0.25rem;
-    scrollbar-width: none;
-  }
-
-  .player-tabs::-webkit-scrollbar {
-    display: none;
-  }
-
-  .player-tabs button {
-    flex-shrink: 0;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-sm);
-    border: 1.5px solid var(--color-border);
-    background: var(--color-surface);
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-    font-weight: 500;
-    white-space: nowrap;
-    transition: all 0.15s;
-  }
-
-  .player-tabs button.active {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-    color: white;
-    box-shadow: 0 2px 6px rgba(90, 122, 101, 0.35);
-  }
-
-  .player-card {
+    -webkit-overflow-scrolling: touch;
     background: var(--color-surface);
     border-radius: var(--radius);
-    padding: 1rem;
-    box-shadow: var(--shadow);
     border: 1px solid var(--color-border-light);
+    box-shadow: var(--shadow);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 6.5rem repeat(var(--players), minmax(4.75rem, 1fr));
+    min-width: fit-content;
+    width: 100%;
+  }
+
+  .cell {
+    padding: 0.55rem 0.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+    display: flex;
+    align-items: flex-start;
+  }
+
+  /* Sticky label column */
+  .label-cell {
+    position: sticky;
+    left: 0;
+    background: var(--color-surface-raised);
+    z-index: 1;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.3;
+    align-items: center;
+    border-right: 1px solid var(--color-border-light);
+    padding-right: 0.6rem;
+  }
+
+  .header-cell {
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .player-header {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    color: var(--color-text);
+    justify-content: center;
+    text-align: center;
+    border-bottom: 2px solid var(--color-border);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    padding: 0.55rem 0.4rem;
+  }
+
+  .input-cell {
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0.4rem 0.4rem;
+  }
+
+  .input-cell :global(input[type="number"]) {
+    width: 100%;
+    padding: 0.45rem 0.25rem;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .total-label {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    color: var(--color-text);
+    border-bottom: none;
+    border-top: 2px solid var(--color-border);
+  }
+
+  .total-cell {
+    justify-content: center;
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    border-bottom: none;
+    border-top: 2px solid var(--color-border);
+    text-align: center;
+    display: block;
+    padding: 0.55rem 0.4rem;
   }
 
   .btn-results {

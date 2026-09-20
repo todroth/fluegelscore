@@ -45,6 +45,7 @@ export const nektarPoints = derived(gameState, ($g) => {
     if (autoPlayers.length === 0) continue;
 
     const max = Math.max(...autoPlayers.map((p) => p.value));
+    if (max === 0) continue; // no nectar spent → no points for this habitat
     const firstPlaceCount = autoPlayers.filter((p) => p.value === max).length;
 
     for (const { i, value } of autoPlayers) {
