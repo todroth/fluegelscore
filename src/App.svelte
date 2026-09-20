@@ -8,6 +8,18 @@
   import ResultsScreen from './lib/components/ResultsScreen.svelte';
   import HistoryScreen from './lib/components/HistoryScreen.svelte';
 
+  function goHome() {
+    const current = get(screen);
+    if (current === 'setup') return;
+    if (current === 'score') {
+      if (confirm('Zurück zur Startseite? Alle eingetragenen Punkte gehen verloren.')) {
+        resetGame();
+      }
+    } else {
+      screen.set('setup');
+    }
+  }
+
   onMount(() => {
     // Always keep a history entry above the current one so popstate always fires.
     history.pushState(null, '');
@@ -37,8 +49,10 @@
 <div class="app-shell">
   <header>
     <div class="header-inner">
-      <span class="logo-icon"><FeatherIcon size={28} /></span>
-      <h1>Flügelscore</h1>
+      <button class="logo-btn" onclick={goHome}>
+        <span class="logo-icon"><FeatherIcon size={28} /></span>
+        <h1>Flügelscore</h1>
+      </button>
       {#if $screen === 'setup'}
         <button class="history-btn" onclick={() => screen.set('history')} title="Spielverlauf">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -84,11 +98,27 @@
   .header-inner {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
     padding: 0.75rem 1rem;
     max-width: 600px;
     margin: 0 auto;
     width: 100%;
+  }
+
+  .logo-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+    border-radius: var(--radius-sm);
+    padding: 0.1rem 0.25rem;
+    margin: -0.1rem -0.25rem;
+    transition: opacity 0.15s;
+  }
+
+  .logo-btn:active {
+    opacity: 0.6;
   }
 
   .logo-icon {
@@ -101,7 +131,6 @@
   h1 {
     font-size: 1.3rem;
     color: var(--color-text);
-    flex: 1;
   }
 
   .history-btn {
