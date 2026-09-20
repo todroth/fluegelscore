@@ -4,7 +4,7 @@
   let { playerIndex, value } = $props();
 
   // Start in total mode if there's already a stored value, to avoid overwriting on remount
-  let mode = $state(value > 0 ? 'total' : 'cards');
+  let mode = $state('total');
   let cardValues = $state([]);
   let manualTotal = $state(value ?? 0);
 
