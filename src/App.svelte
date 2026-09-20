@@ -12,7 +12,7 @@
     <div class="header-inner">
       <span class="logo-icon"><FeatherIcon size={28} /></span>
       {#if $screen === 'score'}
-        <button class="title-back-btn" onclick={() => screen.set('setup')} aria-label="Zurück zur Startseite">
+        <button class="title-back-btn" onclick={() => { if (confirm('Zurück zur Startseite? Alle eingetragenen Punkte gehen verloren.')) screen.set('setup'); }} aria-label="Zurück zur Startseite">
           ← Flügelscore
         </button>
       {:else}
