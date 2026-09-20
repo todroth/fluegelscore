@@ -15,8 +15,11 @@
     if (!e.target.value) updateScore(playerIndex, field, 0);
   }
 
-  const simpleRows = [
+  const rowsBefore = [
     { key: 'voegel', label: 'Vögel' },
+  ];
+
+  const rowsAfter = [
     { key: 'rundenziele', label: 'Rundenziele' },
     { key: 'eier', label: 'Eier' },
     { key: 'futter', label: 'Gelagertes Futter' },
@@ -34,8 +37,8 @@
         <div class="cell player-header">{p.name}</div>
       {/each}
 
-      <!-- Simple score rows -->
-      {#each simpleRows as row}
+      <!-- Vögel row -->
+      {#each rowsBefore as row}
         <div class="cell label-cell">{row.label}</div>
         {#each players as p, i}
           <div class="cell input-cell">
@@ -58,6 +61,24 @@
         <div class="cell input-cell">
           <BonusInput playerIndex={i} value={p.scores.bonusTotal} />
         </div>
+      {/each}
+
+      <!-- Remaining simple rows -->
+      {#each rowsAfter as row}
+        <div class="cell label-cell">{row.label}</div>
+        {#each players as p, i}
+          <div class="cell input-cell">
+            <input
+              type="number"
+              min="0"
+              inputmode="numeric"
+              placeholder="0"
+              value={p.scores[row.key] || ''}
+              oninput={(e) => onInput(i, row.key, e)}
+              onblur={(e) => onBlur(i, row.key, e)}
+            />
+          </div>
+        {/each}
       {/each}
 
       <!-- Nektar row with global mode toggle -->
@@ -120,6 +141,7 @@
 
   .scroll-container {
     overflow-x: auto;
+    overflow-y: clip;
     -webkit-overflow-scrolling: touch;
     background: var(--color-surface);
     border-radius: var(--radius);
@@ -156,10 +178,16 @@
   }
 
   .header-cell {
+    top: 0;
+    z-index: 3;
     border-bottom: 2px solid var(--color-border);
   }
 
   .player-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--color-surface);
     font-family: var(--font-serif);
     font-size: 0.95rem;
     color: var(--color-text);
