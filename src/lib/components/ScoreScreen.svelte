@@ -1,5 +1,5 @@
 <script>
-  import { gameState, playerTotals, isDoubleGame, updateScore, goToResults } from '../store.js';
+  import { gameState, playerTotals, isDoubleGame, updateScore, setNektarMode, goToResults } from '../store.js';
   import BonusInput from './BonusInput.svelte';
   import NektarInput from './NektarInput.svelte';
 
@@ -60,14 +60,20 @@
         </div>
       {/each}
 
-      <!-- Nektar row -->
-      <div class="cell label-cell">Nektar</div>
+      <!-- Nektar row with global mode toggle -->
+      <div class="cell label-cell nektar-label-cell">
+        <span>Nektar</span>
+        <div class="nektar-toggle">
+          <button class:active={$gameState.nektarMode === 'auto'} onclick={() => setNektarMode('auto')}>Auto</button>
+          <button class:active={$gameState.nektarMode === 'total'} onclick={() => setNektarMode('total')}>Manuell</button>
+        </div>
+      </div>
       {#each players as p, i}
         <div class="cell input-cell">
           <NektarInput
             playerIndex={i}
+            mode={$gameState.nektarMode}
             habitatValues={p.scores.nektarHabitats}
-            nektarModeValue={p.scores.nektarMode}
             nektarTotalValue={p.scores.nektarTotal}
           />
         </div>
@@ -200,6 +206,35 @@
     text-align: center;
     display: block;
     padding: 0.55rem 0.4rem;
+  }
+
+  .nektar-label-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
+
+  .nektar-toggle {
+    display: flex;
+    width: 100%;
+    border: 1px solid var(--color-border-light);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .nektar-toggle button {
+    flex: 1;
+    padding: 0.2rem 0;
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    background: var(--color-bg);
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .nektar-toggle button.active {
+    background: var(--color-accent);
+    color: white;
   }
 
   .btn-results {
