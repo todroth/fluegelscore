@@ -1,0 +1,100 @@
+:root {
+  --color-bg: #F5F0E8;
+  --color-surface: #FFFDF9;
+  --color-surface-raised: #FAF6EE;
+  --color-text: #2C2316;
+  --color-text-muted: #7A6A55;
+  --color-accent: #5A7A65;
+  --color-accent-light: #8FAF9A;
+  --color-border: #C8B490;
+  --color-border-light: #DDD0B8;
+  --color-gold: #C49A3C;
+  --color-gold-light: #F0E4C0;
+  --radius: 12px;
+  --radius-sm: 6px;
+  --shadow: 0 2px 8px rgba(44, 35, 22, 0.08);
+  --shadow-md: 0 4px 16px rgba(44, 35, 22, 0.12);
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: system-ui, -apple-system, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100dvh;
+  line-height: 1.5;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  line-height: 1.2;
+}
+
+button {
+  font-family: var(--font-sans);
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input[type="number"] {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.5rem;
+  width: 100%;
+  text-align: center;
+  -moz-appearance: textfield;
+  appearance: textfield;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type="number"]:focus {
+  border-color: var(--color-accent);
+}
+
+input[type="text"] {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+input[type="text"]:focus {
+  border-color: var(--color-accent);
+}
+
+#app {
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
