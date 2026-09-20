@@ -19,10 +19,8 @@
             <polyline points="12 6 12 12 16 14"/>
           </svg>
         </button>
-      {:else if $screen !== 'results'}
-        <div style="width: 36px"></div>
       {:else}
-        <div style="width: 36px"></div>
+        <div class="header-spacer"></div>
       {/if}
     </div>
   </header>
@@ -91,6 +89,10 @@
   .history-btn:hover {
     color: var(--color-accent);
     background: var(--color-bg);
+  }
+
+  .header-spacer {
+    width: 36px;
   }
 
   main {

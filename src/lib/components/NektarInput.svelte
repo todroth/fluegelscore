@@ -3,8 +3,6 @@
 
   let { playerIndex, mode, habitatValues, nektarTotalValue } = $props();
 
-  let manualTotal = $state(nektarTotalValue ?? 0);
-
   let currentAutoPoints = $derived($nektarPoints[playerIndex] ?? 0);
 
   function onHabitatInput(habitat, e) {
@@ -13,8 +11,7 @@
   }
 
   function onManualInput(e) {
-    manualTotal = Math.max(0, parseInt(e.target.value) || 0);
-    updateScore(playerIndex, 'nektarTotal', manualTotal);
+    updateScore(playerIndex, 'nektarTotal', Math.max(0, parseInt(e.target.value) || 0));
   }
 </script>
 
@@ -42,9 +39,9 @@
     min="0"
     inputmode="numeric"
     placeholder="0"
-    value={manualTotal || ''}
+    value={nektarTotalValue || ''}
     oninput={onManualInput}
-    onblur={(e) => { if (!e.target.value) { manualTotal = 0; updateScore(playerIndex, 'nektarTotal', 0); } }}
+    onblur={(e) => { if (!e.target.value) updateScore(playerIndex, 'nektarTotal', 0); }}
   />
 {/if}
 
