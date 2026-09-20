@@ -17,7 +17,7 @@
 
 {#if mode === 'auto'}
   <div class="habitats">
-    {#each [{ key: 'wald', label: 'W', title: 'Wald' }, { key: 'grasland', label: 'G', title: 'Grasland' }, { key: 'feuchtgebiet', label: 'F', title: 'Feuchtgebiet' }] as h}
+    {#each [{ key: 'wald', label: '🌲', title: 'Wald' }, { key: 'grasland', label: '🌾', title: 'Grasland' }, { key: 'feuchtgebiet', label: '💧', title: 'Feuchtgebiet' }] as h}
       <div class="habitat-row">
         <span class="habitat-label" title={h.title}>{h.label}</span>
         <input
@@ -60,12 +60,11 @@
   }
 
   .habitat-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    width: 1rem;
+    font-size: 0.9rem;
+    width: 1.2rem;
     flex-shrink: 0;
     text-align: center;
+    line-height: 1;
   }
 
   .habitat-row input {
