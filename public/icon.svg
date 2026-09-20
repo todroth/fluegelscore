@@ -1,33 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <rect width="512" height="512" fill="#5A7A65"/>
 
-  <!-- Feather vane (upright, slightly asymmetric – outer vane wider) -->
-  <path d="M256 52
-           C310 70, 372 152, 364 260
-           C356 340, 316 392, 256 394
-           C196 392, 156 340, 148 260
-           C140 152, 202 70, 256 52Z"
-        fill="white"/>
-
-  <!-- Rachis (central quill through vane) -->
-  <line x1="256" y1="52" x2="256" y2="394"
-        stroke="#3A5847" stroke-width="10" stroke-linecap="round" opacity="0.5"/>
-
-  <!-- Calamus (quill below vane, tapering) -->
-  <path d="M251 392 Q249 434 248 470 Q252 480 256 470 Q260 434 261 392Z"
-        fill="white" opacity="0.88"/>
-
-  <!-- Barb pairs: fan outward from rachis, curve slightly toward tip -->
-  <!-- Pair 1 -->
-  <path d="M262 155 C292 161 328 170 347 176" stroke="#3A5847" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.26"/>
-  <path d="M250 155 C220 161 184 170 165 176" stroke="#3A5847" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.26"/>
-  <!-- Pair 2 -->
-  <path d="M260 218 C293 228 334 244 354 253" stroke="#3A5847" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.26"/>
-  <path d="M252 218 C219 228 178 244 158 253" stroke="#3A5847" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.26"/>
-  <!-- Pair 3 -->
-  <path d="M258 282 C289 296 326 316 342 328" stroke="#3A5847" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.26"/>
-  <path d="M254 282 C223 296 186 316 170 328" stroke="#3A5847" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.26"/>
-  <!-- Pair 4 -->
-  <path d="M257 344 C280 355 310 368 324 375" stroke="#3A5847" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.26"/>
-  <path d="M255 344 C232 355 202 368 188 375" stroke="#3A5847" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.26"/>
+  <!-- Bird silhouette in profile, facing right -->
+  <g fill="white">
+    <!-- Body -->
+    <ellipse cx="215" cy="292" rx="138" ry="94" transform="rotate(-12 215 292)"/>
+    <!-- Head -->
+    <circle cx="330" cy="214" r="68"/>
+    <!-- Beak -->
+    <path d="M380 202 L452 217 L380 232Z"/>
+    <!-- Tail (fan shape) -->
+    <path d="M88 264
+             C62 246, 30 234, 20 240
+             C36 258, 48 278, 48 296
+             C48 314, 36 334, 20 352
+             C30 358, 62 346, 88 328
+             Z"/>
+    <!-- Eye cutout (green circle — makes it look like a real bird) -->
+  </g>
+  <!-- Eye -->
+  <circle cx="346" cy="204" r="14" fill="#5A7A65"/>
+  <circle cx="350" cy="200" r="5" fill="white"/>
 </svg>

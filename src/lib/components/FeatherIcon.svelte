@@ -3,22 +3,16 @@
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
-  <!-- Feather vane -->
-  <path d="M16 3
-           C19.5 4.5, 23 10, 22.5 17
-           C22 22, 19 25.5, 16 25.5
-           C13 25.5, 10 22, 9.5 17
-           C9 10, 12.5 4.5, 16 3Z"
-        fill="currentColor"/>
-  <!-- Rachis -->
-  <line x1="16" y1="3" x2="16" y2="25.5"
-        stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
-  <!-- Calamus -->
-  <line x1="16" y1="25.5" x2="16" y2="30"
-        stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.75"/>
-  <!-- Barbs -->
-  <path d="M16.5 10 C18.5 11 21 12 22 12.5" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" opacity="0.35"/>
-  <path d="M15.5 10 C13.5 11 11 12 10 12.5" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" opacity="0.35"/>
-  <path d="M16.3 17 C18.5 18.2 21 19.5 22 20" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" opacity="0.35"/>
-  <path d="M15.7 17 C13.5 18.2 11 19.5 10 20" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" opacity="0.35"/>
+  <g fill="currentColor">
+    <!-- Body -->
+    <ellipse cx="13.5" cy="18.5" rx="8.6" ry="5.9" transform="rotate(-12 13.5 18.5)"/>
+    <!-- Head -->
+    <circle cx="20.6" cy="13.4" r="4.2"/>
+    <!-- Beak -->
+    <path d="M23.7 12.6 L28.2 13.5 L23.7 14.5Z"/>
+    <!-- Tail -->
+    <path d="M5.5 16.5 C3.9 15.4, 1.9 14.6, 1.3 15 C2.2 16.1, 3 17.4, 3 18.5 C3 19.6, 2.2 20.9, 1.3 22 C1.9 22.4, 3.9 21.6, 5.5 20.5Z"/>
+  </g>
+  <!-- Eye (background color cutout) -->
+  <circle cx="21.6" cy="12.8" r="1.2" fill="var(--color-surface, #FFFDF9)"/>
 </svg>
