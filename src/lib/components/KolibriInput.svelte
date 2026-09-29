@@ -10,6 +10,8 @@
   }
 
   // Aufgedruckte Punktwerte der Kolibri-Punktetafel
+  // Spaltenbeschriftung auf der Tafel (S-T-A-R-T)
+  const COLUMNS = ['S', 'T', 'A', 'R', 'T'];
   const VALUES = [10, 8, 6, 4, 3, 2, 1, 0, -3];
 </script>
 
@@ -17,11 +19,11 @@
 <div class="tracks">
   {#each tracks as t, i}
     <div class="track-row">
-      <span class="track-num">{i + 1}</span>
+      <span class="track-num">{COLUMNS[i]}</span>
       <select
         value={t}
         onchange={(e) => updateKolibriTrack(playerIndex, i, e.target.value)}
-        aria-label="Kolibri-Spalte {i + 1}"
+        aria-label="Kolibri-Spalte {COLUMNS[i]}"
       >
         {#each VALUES as v}
           <option value={String(v)}>{v}</option>
