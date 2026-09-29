@@ -10,8 +10,14 @@
   }
 
   // Aufgedruckte Punktwerte der Kolibri-Punktetafel
-  // Spaltenbeschriftung auf der Tafel (S-T-A-R-T)
-  const COLUMNS = ['S', 'T', 'A', 'R', 'T'];
+  // Spalten der Tafel (Kolibri-Gruppen)
+  const COLUMNS = [
+    { icon: '🐝', name: 'Bienen & Bergjuwelen' },
+    { icon: '💎', name: 'Brillanten & Koketten' },
+    { icon: '💚', name: 'Smaragde' },
+    { icon: '🥭', name: 'Mangos' },
+    { icon: '🔶', name: 'Topas, Jakobiner & Eremiten' },
+  ];
   const VALUES = [10, 8, 6, 4, 3, 2, 1, 0, -3];
 </script>
 
@@ -19,11 +25,11 @@
 <div class="tracks">
   {#each tracks as t, i}
     <div class="track-row">
-      <span class="track-num">{COLUMNS[i]}</span>
+      <span class="track-num" title={COLUMNS[i].name}>{COLUMNS[i].icon}</span>
       <select
         value={t}
         onchange={(e) => updateKolibriTrack(playerIndex, i, e.target.value)}
-        aria-label="Kolibri-Spalte {COLUMNS[i]}"
+        aria-label={COLUMNS[i].name}
       >
         {#each VALUES as v}
           <option value={String(v)}>{v}</option>
@@ -59,11 +65,11 @@
   }
 
   .track-num {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     width: 1.2rem;
     flex-shrink: 0;
     text-align: center;
-    color: var(--color-text-muted);
+    line-height: 1;
   }
 
   select {
