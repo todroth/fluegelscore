@@ -2,6 +2,7 @@
   import { gameState, playerTotals, isDoubleGame, updateScore, setNektarMode, goToResults } from '../store.js';
   import BonusInput from './BonusInput.svelte';
   import NektarInput from './NektarInput.svelte';
+  import KolibriInput from './KolibriInput.svelte';
 
   $effect(() => {
     function onBeforeUnload(e) {
@@ -126,6 +127,14 @@
           </div>
         {/each}
       {/if}
+
+      <!-- Kolibri-Punktetafel row (Amerika-Erweiterung, 5 Spalten) -->
+      <div class="cell label-cell">Kolibri-Punktetafel</div>
+      {#each players as p, i}
+        <div class="cell input-cell">
+          <KolibriInput playerIndex={i} tracks={p.scores.kolibriTracks} total={p.scores.kolibri} />
+        </div>
+      {/each}
 
       <!-- Total row -->
       <div class="cell label-cell total-label">Gesamt</div>

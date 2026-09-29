@@ -13,6 +13,8 @@ function makePlayer(name = '') {
       nektarHabitats: { wald: 0, grasland: 0, feuchtgebiet: 0 },
       nektarTotal: 0,
       duettMarker: 0,
+      kolibri: 0,
+      kolibriTracks: ['', '', '', '', ''], // '' = Start / nicht gewertet
     },
   };
 }
@@ -71,7 +73,7 @@ export const nektarPoints = derived(gameState, ($g) => {
 export const playerTotals = derived([gameState, nektarPoints], ([$g, $nk]) =>
   $g.players.map((p, i) => {
     const s = p.scores;
-    return s.voegel + s.bonusTotal + s.rundenziele + s.eier + s.futter + s.kartenUnterVoegeln + $nk[i] + s.duettMarker;
+    return s.voegel + s.bonusTotal + s.rundenziele + s.eier + s.futter + s.kartenUnterVoegeln + $nk[i] + s.duettMarker + s.kolibri;
   })
 );
 
@@ -110,6 +112,17 @@ export function updateNektarHabitat(playerIndex, habitat, value) {
       ...g.players[playerIndex].scores.nektarHabitats,
       [habitat]: value,
     };
+    return { ...g, players: [...g.players] };
+  });
+}
+
+export function updateKolibriTrack(playerIndex, track, value) {
+  gameState.update((g) => {
+    const sc = g.players[playerIndex].scores;
+    const tracks = [...sc.kolibriTracks];
+    tracks[track] = value;
+    sc.kolibriTracks = tracks;
+    sc.kolibri = tracks.reduce((sum, v) => sum + (v === '' ? 0 : Number(v)), 0);
     return { ...g, players: [...g.players] };
   });
 }

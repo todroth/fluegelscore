@@ -7,6 +7,8 @@
     resetGame();
   }
 
+  let tiedWinners = $derived($rankedPlayers.filter((p) => p.rank === 1));
+
   const RANK_LABELS = ['🥇', '🥈', '🥉'];
 
   const SCORE_LABELS = {
@@ -18,11 +20,19 @@
     kartenUnterVoegeln: 'Karten unter Vögeln',
     nektarPoints: 'Nektar',
     duettMarker: 'Duett-Marker',
+    kolibri: 'Kolibri-Punktetafel',
   };
 </script>
 
 <div class="results">
   <h2>Ergebnis</h2>
+
+  {#if tiedWinners.length > 1}
+    <p class="tie-hint">
+      Punktegleichstand: Es gewinnt, wer von den punktgleichen Spielern
+      ({tiedWinners.map((p) => p.name).join(', ')}) die meisten Futtermarker im eigenen Vorrat hat.
+    </p>
+  {/if}
 
   <div class="players">
     {#each $rankedPlayers as p, idx}
@@ -44,7 +54,7 @@
             {#each Object.entries(SCORE_LABELS) as [key, label]}
               {#if key !== 'duettMarker' || $isDoubleGame}
                 {@const val = key === 'nektarPoints' ? p.nektarPoints : p.scores[key]}
-                {#if val > 0}
+                {#if val}
                   <tr>
                     <td>{label}</td>
                     <td class="pts">{val}</td>
@@ -72,6 +82,16 @@
     font-size: 1.6rem;
     color: var(--color-text);
     text-align: center;
+  }
+
+  .tie-hint {
+    background: var(--color-gold-light);
+    border: 1.5px solid var(--color-gold);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--color-text);
   }
 
   .players {
