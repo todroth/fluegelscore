@@ -13,10 +13,10 @@
   // Spalten der Tafel (Kolibri-Gruppen)
   const COLUMNS = [
     { icon: '🐝', name: 'Bienen & Bergjuwelen' },
-    { icon: '💎', name: 'Brillanten & Koketten' },
+    { icon: '🟣', name: 'Brillanten & Koketten' },
     { icon: '💚', name: 'Smaragde' },
     { icon: '🥭', name: 'Mangos' },
-    { icon: '🔶', name: 'Topas, Jakobiner & Eremiten' },
+    { icon: '💎', name: 'Topas, Jakobiner & Eremiten' },
   ];
   const VALUES = [10, 8, 6, 4, 3, 2, 1, 0, -3];
 </script>
