@@ -13,6 +13,7 @@
     return () => window.removeEventListener('beforeunload', onBeforeUnload);
   });
 
+  let headScroll;
   let players = $derived($gameState.players);
   let totals = $derived($playerTotals);
 
@@ -38,14 +39,19 @@
 </script>
 
 <div class="score-screen">
-  <div class="scroll-container">
-    <div class="grid" style="--players: {players.length}">
+  <div class="table-wrap">
+    <!-- Sticky player name header; horizontally synced with the scroll container below -->
+    <div class="head-scroll" bind:this={headScroll}>
+      <div class="grid" style="--players: {players.length}">
+        <div class="cell label-cell header-cell"></div>
+        {#each players as p}
+          <div class="cell player-header">{p.name}</div>
+        {/each}
+      </div>
+    </div>
 
-      <!-- Player name header -->
-      <div class="cell label-cell header-cell"></div>
-      {#each players as p}
-        <div class="cell player-header">{p.name}</div>
-      {/each}
+    <div class="scroll-container" onscroll={(e) => (headScroll.scrollLeft = e.currentTarget.scrollLeft)}>
+    <div class="grid" style="--players: {players.length}">
 
       <!-- Vögel row -->
       {#each rowsBefore as row}
@@ -155,6 +161,7 @@
       {/each}
 
     </div>
+    </div>
   </div>
 
   <button class="btn-results" onclick={goToResults}>
@@ -169,14 +176,27 @@
     gap: 1.25rem;
   }
 
-  .scroll-container {
-    overflow-x: auto;
-    overflow-y: clip;
-    -webkit-overflow-scrolling: touch;
+  .table-wrap {
     background: var(--color-surface);
     border-radius: var(--radius);
     border: 1px solid var(--color-border-light);
     box-shadow: var(--shadow);
+  }
+
+  .head-scroll {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    overflow: hidden;
+    background: var(--color-surface);
+    border-radius: var(--radius) var(--radius) 0 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  .scroll-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 0 0 var(--radius) var(--radius);
   }
 
   .grid {
@@ -208,15 +228,11 @@
   }
 
   .header-cell {
-    top: 0;
     z-index: 3;
     border-bottom: 2px solid var(--color-border);
   }
 
   .player-header {
-    position: sticky;
-    top: 0;
-    z-index: 2;
     background: var(--color-surface);
     font-family: var(--font-serif);
     font-size: 0.95rem;

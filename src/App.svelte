@@ -89,9 +89,6 @@
   header {
     background: var(--color-surface);
     border-bottom: 1px solid var(--color-border-light);
-    position: sticky;
-    top: 0;
-    z-index: 10;
     box-shadow: var(--shadow);
   }
 
