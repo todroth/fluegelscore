@@ -14,7 +14,7 @@ function makePlayer(name = '') {
       nektarTotal: 0,
       duettMarker: 0,
       kolibri: 0,
-      kolibriTracks: ['', '', '', '', ''], // '' = Start / nicht gewertet
+      kolibriTracks: ['0', '0', '0', '0', '0'],
     },
   };
 }
@@ -122,7 +122,7 @@ export function updateKolibriTrack(playerIndex, track, value) {
     const tracks = [...sc.kolibriTracks];
     tracks[track] = value;
     sc.kolibriTracks = tracks;
-    sc.kolibri = tracks.reduce((sum, v) => sum + (v === '' ? 0 : Number(v)), 0);
+    sc.kolibri = tracks.reduce((sum, v) => sum + Number(v), 0);
     return { ...g, players: [...g.players] };
   });
 }

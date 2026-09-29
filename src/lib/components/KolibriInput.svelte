@@ -3,7 +3,7 @@
 
   let { playerIndex, tracks, total } = $props();
 
-  // Aufgedruckte Punktwerte der Kolibri-Punktetafel (Spalte "START" = 0 Pkt., nicht gewertet)
+  // Aufgedruckte Punktwerte der Kolibri-Punktetafel
   const VALUES = [10, 8, 6, 4, 3, 2, 1, 0, -3];
 </script>
 
@@ -16,7 +16,6 @@
         onchange={(e) => updateKolibriTrack(playerIndex, i, e.target.value)}
         aria-label="Kolibri-Spalte {i + 1}"
       >
-        <option value="">Start</option>
         {#each VALUES as v}
           <option value={String(v)}>{v}</option>
         {/each}
