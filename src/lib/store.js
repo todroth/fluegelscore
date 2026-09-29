@@ -125,12 +125,15 @@ export function updateNektarHabitat(playerIndex, habitat, value) {
 
 export function updateKolibriTrack(playerIndex, track, value) {
   gameState.update((g) => {
-    const sc = g.players[playerIndex].scores;
-    const tracks = [...sc.kolibriTracks];
+    const p = g.players[playerIndex];
+    const tracks = [...p.scores.kolibriTracks];
     tracks[track] = value;
-    sc.kolibriTracks = tracks;
-    sc.kolibri = tracks.reduce((sum, v) => sum + Number(v), 0);
-    return { ...g, players: [...g.players] };
+    const kolibri = tracks.reduce((sum, v) => sum + Number(v), 0);
+    // Replace the player object so the {#each} in ScoreScreen re-renders the sum.
+    const players = g.players.map((pl, i) =>
+      i === playerIndex ? { ...pl, scores: { ...pl.scores, kolibriTracks: tracks, kolibri } } : pl
+    );
+    return { ...g, players };
   });
 }
 
