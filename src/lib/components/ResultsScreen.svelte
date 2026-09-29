@@ -1,9 +1,14 @@
 <script>
-  import { rankedPlayers, isDoubleGame, resetGame } from '../store.js';
+  import { gameState, rankedPlayers, isDoubleGame, resetGame } from '../store.js';
   import { saveGame } from '../history.js';
 
+  // Save as soon as the results are shown, so the game is in the history
+  // regardless of how the screen is left afterwards.
+  $effect(() => {
+    if ($gameState.gameId) saveGame($rankedPlayers, $gameState.gameId);
+  });
+
   function newGame() {
-    saveGame($rankedPlayers);
     resetGame();
   }
 
