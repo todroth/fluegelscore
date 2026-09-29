@@ -46,7 +46,7 @@ export const screen = writable('setup');
 export const gameState = writable({
   playerCount: 2,
   nektarMode: 'auto', // global — all players use the same mode
-  kolibriMode: 'auto',
+  kolibriMode: 'total',
   players: [makePlayer(), makePlayer()],
 });
 
@@ -102,7 +102,7 @@ export const rankedPlayers = derived([gameState, playerTotals, nektarPoints, kol
 
 // Actions
 export function initGame(playerCount, names) {
-  gameState.set({ playerCount, nektarMode: 'auto', kolibriMode: 'auto', players: names.map((n) => makePlayer(n)) });
+  gameState.set({ playerCount, nektarMode: 'auto', kolibriMode: 'total', players: names.map((n) => makePlayer(n)) });
   screen.set('score');
 }
 
@@ -185,6 +185,6 @@ export function goToResults() {
 }
 
 export function resetGame() {
-  gameState.set({ playerCount: 2, nektarMode: 'auto', kolibriMode: 'auto', players: [makePlayer(), makePlayer()] });
+  gameState.set({ playerCount: 2, nektarMode: 'auto', kolibriMode: 'total', players: [makePlayer(), makePlayer()] });
   screen.set('setup');
 }
