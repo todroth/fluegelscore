@@ -1,12 +1,19 @@
 <script>
-  import { updateKolibriTrack } from '../store.js';
+  import { updateKolibriTrack, updateScore } from '../store.js';
 
-  let { playerIndex, tracks, total } = $props();
+  let { playerIndex, mode, tracks, total, kolibriTotalValue } = $props();
+
+  // Manual total may be negative (tracks start at -3 each).
+  function onManualInput(e) {
+    const v = parseInt(e.target.value);
+    updateScore(playerIndex, 'kolibriTotal', Number.isNaN(v) ? 0 : v);
+  }
 
   // Aufgedruckte Punktwerte der Kolibri-Punktetafel
   const VALUES = [10, 8, 6, 4, 3, 2, 1, 0, -3];
 </script>
 
+{#if mode === 'auto'}
 <div class="tracks">
   {#each tracks as t, i}
     <div class="track-row">
@@ -24,6 +31,16 @@
   {/each}
 </div>
 <div class="points-preview">→ {total} Pkt.</div>
+{:else}
+  <input
+    type="number"
+    inputmode="text"
+    placeholder="0"
+    value={kolibriTotalValue || ''}
+    oninput={onManualInput}
+    onblur={(e) => { if (!e.target.value) updateScore(playerIndex, 'kolibriTotal', 0); }}
+  />
+{/if}
 
 <style>
   .tracks {

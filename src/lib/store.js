@@ -14,6 +14,7 @@ function makePlayer(name = '') {
       nektarTotal: 0,
       duettMarker: 0,
       kolibri: 0,
+      kolibriTotal: 0,
       kolibriTracks: ['0', '0', '0', '0', '0'],
     },
   };
@@ -45,6 +46,7 @@ export const screen = writable('setup');
 export const gameState = writable({
   playerCount: 2,
   nektarMode: 'auto', // global — all players use the same mode
+  kolibriMode: 'auto',
   players: [makePlayer(), makePlayer()],
 });
 
@@ -70,16 +72,21 @@ export const nektarPoints = derived(gameState, ($g) => {
   return points;
 });
 
-export const playerTotals = derived([gameState, nektarPoints], ([$g, $nk]) =>
+// Kolibri points per player: sum of the five tracks ('auto') or the manually entered total.
+export const kolibriPoints = derived(gameState, ($g) =>
+  $g.players.map((p) => ($g.kolibriMode === 'total' ? p.scores.kolibriTotal : p.scores.kolibri))
+);
+
+export const playerTotals = derived([gameState, nektarPoints, kolibriPoints], ([$g, $nk, $kp]) =>
   $g.players.map((p, i) => {
     const s = p.scores;
-    return s.voegel + s.bonusTotal + s.rundenziele + s.eier + s.futter + s.kartenUnterVoegeln + $nk[i] + s.duettMarker + s.kolibri;
+    return s.voegel + s.bonusTotal + s.rundenziele + s.eier + s.futter + s.kartenUnterVoegeln + $nk[i] + s.duettMarker + $kp[i];
   })
 );
 
-export const rankedPlayers = derived([gameState, playerTotals, nektarPoints], ([$g, $totals, $nk]) => {
+export const rankedPlayers = derived([gameState, playerTotals, nektarPoints, kolibriPoints], ([$g, $totals, $nk, $kp]) => {
   const sorted = $g.players
-    .map((p, i) => ({ ...p, total: $totals[i], nektarPoints: $nk[i], originalIndex: i }))
+    .map((p, i) => ({ ...p, total: $totals[i], nektarPoints: $nk[i], kolibriPoints: $kp[i], originalIndex: i }))
     .sort((a, b) => b.total - a.total);
 
   const result = [];
@@ -95,7 +102,7 @@ export const rankedPlayers = derived([gameState, playerTotals, nektarPoints], ([
 
 // Actions
 export function initGame(playerCount, names) {
-  gameState.set({ playerCount, nektarMode: 'auto', players: names.map((n) => makePlayer(n)) });
+  gameState.set({ playerCount, nektarMode: 'auto', kolibriMode: 'auto', players: names.map((n) => makePlayer(n)) });
   screen.set('score');
 }
 
@@ -149,6 +156,20 @@ export function setNektarMode(mode) {
   });
 }
 
+export function setKolibriMode(mode) {
+  gameState.update((g) => {
+    // When switching to 'total', pre-fill with the current sum of the tracks.
+    if (mode === 'total') {
+      const players = g.players.map((p) => ({
+        ...p,
+        scores: { ...p.scores, kolibriTotal: p.scores.kolibri },
+      }));
+      return { ...g, kolibriMode: mode, players };
+    }
+    return { ...g, kolibriMode: mode };
+  });
+}
+
 export function updateBonusTotal(playerIndex, total) {
   gameState.update((g) => {
     g.players[playerIndex].scores.bonusTotal = total;
@@ -161,6 +182,6 @@ export function goToResults() {
 }
 
 export function resetGame() {
-  gameState.set({ playerCount: 2, nektarMode: 'auto', players: [makePlayer(), makePlayer()] });
+  gameState.set({ playerCount: 2, nektarMode: 'auto', kolibriMode: 'auto', players: [makePlayer(), makePlayer()] });
   screen.set('setup');
 }

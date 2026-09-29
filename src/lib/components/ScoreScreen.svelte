@@ -1,5 +1,5 @@
 <script>
-  import { gameState, playerTotals, isDoubleGame, updateScore, setNektarMode, goToResults } from '../store.js';
+  import { gameState, playerTotals, isDoubleGame, updateScore, setNektarMode, setKolibriMode, goToResults } from '../store.js';
   import BonusInput from './BonusInput.svelte';
   import NektarInput from './NektarInput.svelte';
   import KolibriInput from './KolibriInput.svelte';
@@ -129,10 +129,22 @@
       {/if}
 
       <!-- Kolibri-Punktetafel row (Amerika-Erweiterung, 5 Spalten) -->
-      <div class="cell label-cell">Kolibri-Punktetafel</div>
+      <div class="cell label-cell nektar-label-cell">
+        <span>Kolibri-Punktetafel</span>
+        <div class="nektar-toggle">
+          <button class:active={$gameState.kolibriMode === 'auto'} onclick={() => setKolibriMode('auto')}>Auto</button>
+          <button class:active={$gameState.kolibriMode === 'total'} onclick={() => setKolibriMode('total')}>Manuell</button>
+        </div>
+      </div>
       {#each players as p, i}
         <div class="cell input-cell">
-          <KolibriInput playerIndex={i} tracks={p.scores.kolibriTracks} total={p.scores.kolibri} />
+          <KolibriInput
+            playerIndex={i}
+            mode={$gameState.kolibriMode}
+            tracks={p.scores.kolibriTracks}
+            total={p.scores.kolibri}
+            kolibriTotalValue={p.scores.kolibriTotal}
+          />
         </div>
       {/each}
 

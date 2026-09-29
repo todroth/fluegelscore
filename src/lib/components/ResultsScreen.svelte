@@ -20,7 +20,7 @@
     kartenUnterVoegeln: 'Karten unter Vögeln',
     nektarPoints: 'Nektar',
     duettMarker: 'Duett-Marker',
-    kolibri: 'Kolibri-Punktetafel',
+    kolibriPoints: 'Kolibri-Punktetafel',
   };
 </script>
 
@@ -53,7 +53,7 @@
           <tbody>
             {#each Object.entries(SCORE_LABELS) as [key, label]}
               {#if key !== 'duettMarker' || $isDoubleGame}
-                {@const val = key === 'nektarPoints' ? p.nektarPoints : p.scores[key]}
+                {@const val = key === 'nektarPoints' || key === 'kolibriPoints' ? p[key] : p.scores[key]}
                 {#if val}
                   <tr>
                     <td>{label}</td>
