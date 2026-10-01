@@ -14,8 +14,8 @@ export default defineConfig({
         theme_color: '#5A7A65',
         background_color: '#F5F0E8',
         display: 'standalone',
-        start_url: '/fluegelscore/',
-        scope: '/fluegelscore/',
+        start_url: '/',
+        scope: '/',
         icons: [
           {
             src: 'icons/icon-192.png',
@@ -60,5 +60,5 @@ export default defineConfig({
       },
     }),
   ],
-  base: '/fluegelscore/',
+  base: '/',
 })
